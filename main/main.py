@@ -12,6 +12,7 @@ mqtt_password = secret.MQTT_PASSWORD
 client_id = ubinascii.hexlify(machine.unique_id())
 topic_sub = b'notification'
 topic_pub = b'hello'
+topic_pub_2 = b'hello_2'
 
 def sub_cb(topic, msg):
   print((topic, msg))
@@ -47,6 +48,7 @@ def start():
         if (time.time() - last_message) > message_interval:
           msg = b'Hello #%d' % counter
           client.publish(topic_pub, msg)
+          client.publish(topic_pub_2, msg)
           last_message = time.time()
           counter += 1
       except OSError as e:
