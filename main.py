@@ -1,5 +1,5 @@
 def connectToWifiAndUpdate():
-    import time, machine, network, gc, .main.secrets as secrets
+    import time, machine, network, gc
     time.sleep(1)
     print('Memory free', gc.mem_free())
     
@@ -24,7 +24,7 @@ def connectToWifiAndUpdate():
 
 def startApp():
     import main.main as main
-    start()
+    main.start()
 
 
 connectToWifiAndUpdate()

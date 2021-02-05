@@ -11,8 +11,8 @@ mqtt_username = secret.MQTT_USERNAME
 mqtt_password = secret.MQTT_PASSWORD
 client_id = ubinascii.hexlify(machine.unique_id())
 topic_sub = b'notification'
-topic_pub = b'hello'
-topic_pub_2 = b'hello_2'
+topic_pub = b'topic/meter_msg'
+topic_pub_2 = b'topic/meter/login'
 
 def sub_cb(topic, msg):
   print((topic, msg))
