@@ -24,10 +24,10 @@ def connect_to_wifi_and_update():
 
 
 def start_app():
-  #  import main.main as main
-    import main.home_automation as home_auto
- #   main.start()
-    home_auto.start()
+    import main.main as main
+    main.start()
+    # import main.home_automation as home_auto
+    # home_auto.start()
 
 
 connect_to_wifi_and_update()

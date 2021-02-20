@@ -11,7 +11,7 @@ class RelayController:
         self.pin_type = PIN_TYPE[pin_type]
         self.state = False
         self.relay = Pin(pin_no, self.pin_type)
-        print('relay -->', self.relay, 'pin no -->',  self.pin_no, 'pin_type -->',  self.pin_type)
+        print('relay -->', self.relay, 'pin no -->', self.pin_no, 'pin_type -->', self.pin_type)
 
     def update_state(self, state=0):
         if isinstance(state, int):
@@ -52,3 +52,6 @@ class RelayManager:
             if _.pin_no == pin_no:
                 return _
         return False
+
+    def get_relays(self):
+        return self.relays
