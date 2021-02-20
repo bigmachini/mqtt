@@ -77,11 +77,14 @@ class RelayManager:
                 self.pin_set = set(_pin_list)
                 print('RelayManager::add_relays:: self.pin_set -->', self.pin_set)
                 msg = {'pin_no': _pin_no, 'client_id': self.client_id}
-                msg = json.dumps(msg)
-                msg = msg.encode('utf-8')
-                self.client.publish(self.topic , msg)
+                self.publish_message(msg, self.topic)
             else:
                 raise Exception('PIN_{}_ASSIGNED_ALREADY'.format(_pin_no))
+
+    def publish_message(self, msg, topic):
+        msg = json.dumps(msg)
+        msg = msg.encode('utf-8')
+        self.client.publish(topic, msg)
 
     def update_relay(self, relays, topic_pub):
         for _ in relays:
@@ -89,11 +92,11 @@ class RelayManager:
             _state = _.get('state', None)
             if _pin_no:
                 relay = self.get_relay_by_pin(_pin_no)
-                if relay.update_state(_state):
+                if relay and relay.update_state(_state):
                     msg = {'pin_no': _pin_no, 'state': _state, 'client_id': self.client_id}
-                    msg = json.dumps(msg)
-                    msg = msg.encode('utf-8')
-                    self.client.publish(topic_pub, msg)
+                else:
+                    msg = {'pin_no': _pin_no, 'state': None, 'client_id': self.client_id}
+                self.publish_message(msg, topic_pub)
             else:
                 raise Exception('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
 
