@@ -6,7 +6,7 @@ PIN_TYPE = {'in': Pin.IN,
             'out': Pin.OUT}
 
 
-class RelayController:
+class Relay:
     def __init__(self, pin_no, pin_type, name, client_id):
         self.name = name + "_" + str(pin_no)
         self.pin_no = pin_no
@@ -21,7 +21,7 @@ class RelayController:
             try:
                 self.relay.value(state)
                 self.state = bool(state)
-                print('RelayController:: update_state:: relay.name -->', self.name, 'relay.pin_no -->', self.pin_no,
+                print('Relay:: update_state:: relay.name -->', self.name, 'relay.pin_no -->', self.pin_no,
                       'relay.pin_type-->', self.pin_type, 'state', state)
                 return True
             except Exception as ex:
@@ -37,10 +37,12 @@ class RelayController:
 
 
 class RelayManager:
-    def __init__(self, client_id, relays=[]):
+    def __init__(self, client, client_id, topic, relays=[]):
         self.relays = []
         self.pin_set = set([])
+        self.client = client
         self.client_id = client_id
+        self.topic = topic
         self.add_relays(relays)
 
     def get_relay_by_name(self, name):
@@ -69,14 +71,19 @@ class RelayManager:
             _pin_type = _.get('pin_type', None)
             _name = _.get('name', None)
             if _pin_no not in _pin_list:
-                self.relays.append(RelayController(_pin_no, _pin_type, _name, self.client_id))
+                _relay = Relay(_pin_no, _pin_type, _name, self.client_id)
+                self.relays.append(_relay)
                 _pin_list.append(_pin_no)
                 self.pin_set = set(_pin_list)
                 print('RelayManager::add_relays:: self.pin_set -->', self.pin_set)
+                msg = {'pin_no': _pin_no, 'client_id': self.client_id}
+                msg = json.dumps(msg)
+                msg = msg.encode('utf-8')
+                self.client.publish(self.topic , msg)
             else:
                 raise Exception('PIN_{}_ASSIGNED_ALREADY'.format(_pin_no))
 
-    def update_relay(self, relays, client, topic_pub):
+    def update_relay(self, relays, topic_pub):
         for _ in relays:
             _pin_no = _.get('pin_no', None)
             _state = _.get('state', None)
@@ -86,7 +93,7 @@ class RelayManager:
                     msg = {'pin_no': _pin_no, 'state': _state, 'client_id': self.client_id}
                     msg = json.dumps(msg)
                     msg = msg.encode('utf-8')
-                    client.publish(topic_pub, msg)
+                    self.client.publish(topic_pub, msg)
             else:
                 raise Exception('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
 
