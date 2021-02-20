@@ -31,15 +31,7 @@ class RelayManager:
     def __init__(self, relays=[]):
         self.relays = []
         self.pin_set = set([])
-        for _ in relays:
-            _pin_no = _.get('pin_no', None)
-            _pin_type = _.get('pin_type', None)
-            _name = _.get('name', None)
-            if _pin_no not in self.pin_set:
-                self.relays.append(RelayController(_pin_no, _pin_type, _name))
-                self.pin_set = set(self.relays)
-            else:
-                raise Exception('PIN_ASSIGNED_ALREADY')
+        self.add_relays(relays)
 
     def get_relay_by_name(self, name):
         for _ in self.relays:
@@ -52,6 +44,19 @@ class RelayManager:
             if _.pin_no == pin_no:
                 return _
         return False
+
+    def add_relays(self, relays):
+        print('add_relays:: relays -->', relays)
+        for _ in relays:
+            _pin_no = _.get('pin_no', None)
+            _pin_type = _.get('pin_type', None)
+            _name = _.get('name', None)
+            if _pin_no not in self.pin_set:
+                self.relays.append(RelayController(_pin_no, _pin_type, _name))
+                self.pin_set = set(self.relays)
+                print('add_relays:: self.pin_set -->', self.pin_set)
+            else:
+                raise Exception('PIN_{}_ASSIGNED_ALREADY'.format(_pin_no))
 
     def get_relays(self):
         return self.relays

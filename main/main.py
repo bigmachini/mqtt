@@ -28,7 +28,10 @@ def sub_cb(topic, msg):
     print('sub_cb:: topic -->', topic, 'msg', msg)
     if topic == TOPIC_CONFIG:
         relays = json.loads(msg.decode('utf-8'))
-        relay_manager = RelayManager(relays)
+        if relay_manager is None:
+            relay_manager = RelayManager(relays)
+        else:
+            relay_manager.add_relays(relays)
     elif topic == TOPIC_RELAY:
         relay_manager.get_relay_by_pin()
     elif topic == TOPIC_UPDATE:
