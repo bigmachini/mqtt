@@ -27,7 +27,7 @@ def sub_cb(topic, msg):
     global relay_manager,update_firmware
     print('sub_cb:: topic -->', topic, 'msg', msg)
     if topic == TOPIC_CONFIG:
-        relays = json.decode(msg.decode('utf-8'))
+        relays = json.loads(msg.decode('utf-8'))
         relay_manager = RelayManager(relays)
     elif topic == TOPIC_RELAY:
         relay_manager.get_relay_by_pin()
