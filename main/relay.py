@@ -17,6 +17,8 @@ class RelayController:
         if isinstance(state, int):
             self.relay.value(state)
             self.state = bool(state)
+            print('RelayController:: update_state:: relay.name -->', self.name, 'relay.pin_no -->', self.pin_no,
+                  'relay.pin_type-->', self.pin_type, 'state', state)
         else:
             raise Exception('INVALID_STATE')
 
