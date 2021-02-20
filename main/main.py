@@ -36,7 +36,7 @@ def sub_cb(topic, msg):
     if topic == SUB_TOPIC_CONFIG:
         relays = json.loads(msg.decode('utf-8'))
         if relay_manager is None:
-            relay_manager = RelayManager(relays,str_client_id)
+            relay_manager = RelayManager(str_client_id,relays)
         else:
             relay_manager.add_relays(relays)
     elif topic == SUB_TOPIC_RELAY:
