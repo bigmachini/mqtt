@@ -12,8 +12,8 @@ mqtt_username = secret.MQTT_USERNAME_HOME_AUTO
 mqtt_password = secret.MQTT_PASSWORD_HOME_AUTO
 client_id = ubinascii.hexlify(machine.unique_id())
 
-TOPIC_CONFIG = b'home_auto/config'
-TOPIC_RELAY = b'home_auto/relay'
+TOPIC_CONFIG = 'home_auto/{}/config'.format(client_id).lower().encode('utf-8')
+TOPIC_RELAY = 'home_auto/{}/relay'.format(client_id).lower().encode('utf-8')
 TOPICS = [TOPIC_CONFIG, TOPIC_RELAY]
 
 relay_manager = None
@@ -30,7 +30,7 @@ def sub_cb(topic, msg):
         ]
         relay_manager = RelayManager(relays)
     elif topic == TOPIC_RELAY:
-        pass
+        relay_manager.get_relay_by_pin()
 
 
 def connect_and_subscribe():
