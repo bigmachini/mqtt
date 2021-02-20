@@ -1,3 +1,4 @@
+import json
 from time import sleep
 from main.relay import RelayManager
 from .umqttsimple import MQTTClient
@@ -26,11 +27,7 @@ def sub_cb(topic, msg):
     global relay_manager,update_firmware
     print('sub_cb:: topic -->', topic, 'msg', msg)
     if topic == TOPIC_CONFIG:
-        relays = [
-            {'pin_no': 12, "pin_type": "out", "name": "pin_12"},
-            {'pin_no': 14, "pin_type": "out", "name": "pin_14"},
-            {'pin_no': 27, "pin_type": "out", "name": "pin_27"}
-        ]
+        relays = json.decode(msg.decode('utf-8'))
         relay_manager = RelayManager(relays)
     elif topic == TOPIC_RELAY:
         relay_manager.get_relay_by_pin()
