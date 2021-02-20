@@ -36,7 +36,7 @@ class RelayManager:
             _pin_type = _.get('pin_type', None)
             _name = _.get('name', None)
             if _pin_no not in self.pin_set:
-                self.append(RelayController(_pin_no, _pin_type, _name))
+                self.relays.append(RelayController(_pin_no, _pin_type, _name))
                 self.pin_set = set(self.relays)
             else:
                 raise Exception('PIN_ASSIGNED_ALREADY')
