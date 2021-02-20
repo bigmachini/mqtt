@@ -14,7 +14,8 @@ client_id = ubinascii.hexlify(machine.unique_id())
 
 TOPIC_CONFIG = 'home_auto/{}/config'.format(client_id).lower().encode('utf-8')
 TOPIC_RELAY = 'home_auto/{}/relay'.format(client_id).lower().encode('utf-8')
-TOPICS = [TOPIC_CONFIG, TOPIC_RELAY]
+TOPIC_UPDATE = 'home_auto/{}/update'.format(client_id).lower().encode('utf-8')
+TOPICS = [TOPIC_CONFIG, TOPIC_RELAY, TOPIC_UPDATE]
 
 relay_manager = None
 
