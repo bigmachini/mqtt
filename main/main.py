@@ -11,10 +11,11 @@ mqtt_port = secret.MQTT_PORT_HOME_AUTO
 mqtt_username = secret.MQTT_USERNAME_HOME_AUTO
 mqtt_password = secret.MQTT_PASSWORD_HOME_AUTO
 client_id = ubinascii.hexlify(machine.unique_id())
+str_client_id = str(client_id)
 
-TOPIC_CONFIG = 'home_auto/{}/config'.format(client_id).lower().encode('utf-8')
-TOPIC_RELAY = 'home_auto/{}/relay'.format(client_id).lower().encode('utf-8')
-TOPIC_UPDATE = 'home_auto/{}/update'.format(client_id).lower().encode('utf-8')
+TOPIC_CONFIG = 'home_auto/{}/config'.format(str_client_id).lower().encode('utf-8')
+TOPIC_RELAY = 'home_auto/{}/relay'.format(str_client_id).lower().encode('utf-8')
+TOPIC_UPDATE = 'home_auto/{}/update'.format(str_client_id).lower().encode('utf-8')
 TOPICS = [TOPIC_CONFIG, TOPIC_RELAY, TOPIC_UPDATE]
 
 relay_manager = None
