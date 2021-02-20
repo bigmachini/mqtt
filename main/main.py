@@ -41,7 +41,7 @@ def connect_and_subscribe():
     print('Connected to {} MQTT broker'.format(mqtt_server))
     for _ in TOPICS:
         client.subscribe(_)
-        print('Subscribed to %{} topic'.format(_))
+        print('Subscribed to {} topic'.format(_))
     return client
 
 
