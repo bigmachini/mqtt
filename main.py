@@ -14,7 +14,7 @@ def connect_to_wifi_and_update():
         while not sta_if.isconnected():
             pass
     print('network config:', sta_if.ifconfig())
-    otaUpdater = OTAUpdater('https://github.com/bigmachini/mqtt', main_dir='main', secrets_file="secrets.py")
+    otaUpdater = OTAUpdater(secret.GITHUB_URL, main_dir='main', secrets_file="secrets.py")
     hasUpdated = otaUpdater.install_update_if_available()
     if hasUpdated:
         machine.reset()
@@ -26,6 +26,7 @@ def connect_to_wifi_and_update():
 def start_app():
     import main.main as main
     main.start(connect_to_wifi_and_update)
+
 
 connect_to_wifi_and_update()
 start_app()

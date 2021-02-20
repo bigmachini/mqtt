@@ -15,10 +15,14 @@ class RelayController:
 
     def update_state(self, state=0):
         if isinstance(state, int):
-            self.relay.value(state)
-            self.state = bool(state)
-            print('RelayController:: update_state:: relay.name -->', self.name, 'relay.pin_no -->', self.pin_no,
-                  'relay.pin_type-->', self.pin_type, 'state', state)
+            try:
+                self.relay.value(state)
+                self.state = bool(state)
+                print('RelayController:: update_state:: relay.name -->', self.name, 'relay.pin_no -->', self.pin_no,
+                      'relay.pin_type-->', self.pin_type, 'state', state)
+                return True
+            except Exception as ex:
+                return False
         else:
             raise Exception('INVALID_STATE')
 
@@ -47,15 +51,25 @@ class RelayManager:
                 return _
         return False
 
+    def get_pins(self):
+        pin_list = []
+        for _ in self.relays:
+            pin_list.append(_.pin_no)
+        return pin_list
+
     def add_relays(self, relays):
-        print('add_relays:: relays -->', relays)
+        print('RelayManager::add_relays:: relays -->', relays)
+        _pin_list = self.get_pins()
+        print('RelayManager::add_relays:: _pin_list -->', _pin_list)
+
         for _ in relays:
             _pin_no = _.get('pin_no', None)
             _pin_type = _.get('pin_type', None)
             _name = _.get('name', None)
-            if _pin_no not in self.pin_set:
+            if _pin_no not in _pin_list:
                 self.relays.append(RelayController(_pin_no, _pin_type, _name))
-                self.pin_set = set(self.relays)
+                _pin_list.append(_.pin_no)
+                self.pin_set = set(_pin_list)
                 print('add_relays:: self.pin_set -->', self.pin_set)
             else:
                 raise Exception('PIN_{}_ASSIGNED_ALREADY'.format(_pin_no))
@@ -66,7 +80,8 @@ class RelayManager:
             _state = _.get('state', None)
             if _pin_no:
                 relay = self.get_relay_by_pin(_pin_no)
-                relay.update_state(_state)
+                if relay.update_state(_state):
+                    pass
             else:
                 raise Exception('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
 
