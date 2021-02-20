@@ -1,3 +1,5 @@
+import json
+
 from machine import Pin
 
 PIN_TYPE = {'in': Pin.IN,
@@ -84,6 +86,8 @@ class RelayManager:
                 relay = self.get_relay_by_pin(_pin_no)
                 if relay.update_state(_state):
                     msg = {'pin_no': _pin_no, 'state': _state, 'client_id': self.client_id}
+                    msg = json.dumps(msg)
+                    msg = msg.encode('utf-8')
                     client.publish(topic_pub, msg)
             else:
                 raise Exception('PIN_{}_NOT_ASSIGNED'.format(_pin_no))

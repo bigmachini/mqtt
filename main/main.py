@@ -14,16 +14,15 @@ mqtt_password = secret.MQTT_PASSWORD_HOME_AUTO
 client_id = ubinascii.hexlify(machine.unique_id())
 str_client_id = client_id.decode('utf-8')
 
-#topics subscribe to
+# topics subscribe to
 SUB_TOPIC_CONFIG = 'home_auto/{}/config'.format(str_client_id).lower().encode('utf-8')
 SUB_TOPIC_RELAY = 'home_auto/{}/relay'.format(str_client_id).lower().encode('utf-8')
 SUB_TOPIC_UPDATE = 'home_auto/{}/update'.format(str_client_id).lower().encode('utf-8')
 TOPICS = [SUB_TOPIC_CONFIG, SUB_TOPIC_RELAY, SUB_TOPIC_UPDATE]
-#topics publishing to
+# topics publishing to
 PUB_TOPIC_CONFIG = b'home_auto/config'
 PUB_TOPIC_RELAY = b'home_auto/relay'
 PUB_TOPIC_UPDATE = b'home_auto/update'
-
 
 relay_manager = None
 update_firmware = None
@@ -31,19 +30,28 @@ client = None
 
 
 def sub_cb(topic, msg):
-    global relay_manager, update_firmware,client
+    global relay_manager, update_firmware, client
     print('sub_cb:: topic -->', topic, 'msg', msg)
     if topic == SUB_TOPIC_CONFIG:
         relays = json.loads(msg.decode('utf-8'))
         if relay_manager is None:
-            relay_manager = RelayManager(str_client_id,relays)
+            relay_manager = RelayManager(str_client_id, relays)
         else:
             relay_manager.add_relays(relays)
     elif topic == SUB_TOPIC_RELAY:
         relay = json.loads(msg.decode('utf-8'))
-        relay_manager.update_relay(relay,client, PUB_TOPIC_CONFIG)
+        relay_manager.update_relay(relay, client, PUB_TOPIC_CONFIG)
     elif topic == SUB_TOPIC_UPDATE:
         update_firmware()
+
+
+def get_configuration():
+    global client
+    if relay_manager is None:
+        msg = {'client_id': str_client_id}
+        msg = json.dumps(msg)
+        msg = msg.encode('utf-8')
+        client.publish(PUB_TOPIC_CONFIG, msg)
 
 
 def connect_and_subscribe():
@@ -65,7 +73,7 @@ def restart_and_reconnect():
 
 
 def start(connect_to_wifi_and_update):
-    global relay_manager, update_firmware,client
+    global relay_manager, update_firmware, client
     update_firmware = connect_to_wifi_and_update
     try:
         client = connect_and_subscribe()
@@ -74,5 +82,6 @@ def start(connect_to_wifi_and_update):
 
     while True:
         client.check_msg()
+        get_configuration()
         if relay_manager is not None:
             pass
