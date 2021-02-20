@@ -32,10 +32,10 @@ class RelayManager:
         self.relays = []
         self.pin_set = set([])
         for _ in relays:
-            if _.pin_no not in self.pin_set:
-                _pin_no = _.get('pin_no', None)
-                _pin_type = _.get('pin_type', None)
-                _name = _.get('name', None)
+            _pin_no = _.get('pin_no', None)
+            _pin_type = _.get('pin_type', None)
+            _name = _.get('name', None)
+            if _pin_no not in self.pin_set:
                 self.append(RelayController(_pin_no, _pin_type, _name))
                 self.pin_set = set(self.relays)
             else:
