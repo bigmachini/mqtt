@@ -70,7 +70,7 @@ class RelayManager:
             _name = _.get('name', None)
             if _pin_no not in _pin_list:
                 self.relays.append(RelayController(_pin_no, _pin_type, _name, self.client_id))
-                _pin_list.append(_.pin_no)
+                _pin_list.append(_pin_no)
                 self.pin_set = set(_pin_list)
                 print('RelayManager::add_relays:: self.pin_set -->', self.pin_set)
             else:
