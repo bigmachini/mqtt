@@ -24,7 +24,9 @@ def connectToWifiAndUpdate():
 
 def startApp():
     import main.main as main
+    import main.home_automation as home_auto
     main.start()
+    home_auto.start()
 
 
 connectToWifiAndUpdate()
