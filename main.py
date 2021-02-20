@@ -24,8 +24,12 @@ def connect_to_wifi_and_update():
 
 
 def start_app():
-    import main.main as main
-    main.start(connect_to_wifi_and_update)
+    try:
+        import main.main as main
+        main.start(connect_to_wifi_and_update)
+    except Exception as ex:
+        import machine
+        machine.reset()
 
 
 connect_to_wifi_and_update()
