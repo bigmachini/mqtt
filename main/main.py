@@ -19,10 +19,11 @@ TOPIC_UPDATE = 'home_auto/{}/update'.format(str_client_id).lower().encode('utf-8
 TOPICS = [TOPIC_CONFIG, TOPIC_RELAY, TOPIC_UPDATE]
 
 relay_manager = None
+update_firmware = None
 
 
 def sub_cb(topic, msg):
-    global relay_manager
+    global relay_manager,update_firmware
     print('sub_cb:: topic -->', topic, 'msg', msg)
     if topic == TOPIC_CONFIG:
         relays = [
@@ -33,6 +34,8 @@ def sub_cb(topic, msg):
         relay_manager = RelayManager(relays)
     elif topic == TOPIC_RELAY:
         relay_manager.get_relay_by_pin()
+    elif topic == TOPIC_UPDATE:
+        update_firmware()
 
 
 def connect_and_subscribe():
@@ -53,8 +56,9 @@ def restart_and_reconnect():
     machine.reset()
 
 
-def start():
-    global relay_manager
+def start(connect_to_wifi_and_update):
+    global relay_manager, update_firmware
+    update_firmware = connect_to_wifi_and_update
     last_message = 0
     message_interval = 5
     counter = 0
