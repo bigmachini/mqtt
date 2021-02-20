@@ -62,6 +62,7 @@ def start():
         restart_and_reconnect()
 
     while True:
+        client.check_msg()
         if relay_manager is not None:
             relays = relay_manager.get_relays()
             print('home_automation:: start:: relays --> {}'.format(relays))
