@@ -20,7 +20,10 @@ def start():
             sleep(5)
 
         for _ in relays:
-            relay = relay_manager.get_relay_by_pin(_.pin_no)
+            _pin_no = _.get('pin_no', None)
+            print('_pin_no', _pin_no)
+            # TODO: Add functionality to check for None
+            relay = relay_manager.get_relay_by_pin(_pin_no)
             print(relay.name, relay.pin_no, relay.pin_type)
             relay.update_state(1)
             sleep(5)
