@@ -25,7 +25,7 @@ def connect_to_wifi_and_update():
 
 def start_app():
     import main.main as main
-    main.start()
+    main.start(connect_to_wifi_and_update)
 
 connect_to_wifi_and_update()
 start_app()
