@@ -1,11 +1,8 @@
-# Complete project details at https://RandomNerdTutorials.com
-
-import time
-from main.umqttsimple import MQTTClient
-import main.secrets as secret
-import micropython
-import network
 import esp
+import network
+
+import main.secrets as secret
+
 esp.osdebug(None)
 import gc
 gc.collect()
