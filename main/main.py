@@ -69,14 +69,15 @@ def start():
             for _ in relays:
                 _pin_no = _.pin_no
                 relay = relay_manager.get_relay_by_pin(_pin_no)
-                print('relay.name -->', relay.name, 'relay.pin_no -->', relay.pin_no, 'relay.pin_type-->',
-                      relay.pin_type)
                 relay.update_state(0)
+                print('relay.name -->', relay.name, 'relay.pin_no -->', relay.pin_no, 'relay.pin_type-->',
+                      relay.pin_type, 'state', 0)
                 sleep(5)
 
             for _ in relays:
-                _pin_no = _.get('pin_no', None)
+                _pin_no = _.pin_no
                 relay = relay_manager.get_relay_by_pin(_pin_no)
-                print(relay.name, relay.pin_no, relay.pin_type)
                 relay.update_state(1)
+                print('relay.name -->', relay.name, 'relay.pin_no -->', relay.pin_no, 'relay.pin_type-->',
+                      relay.pin_type, 'state', 1)
                 sleep(5)
