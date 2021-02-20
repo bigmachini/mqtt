@@ -67,7 +67,7 @@ def start():
             relays = relay_manager.get_relays()
             print('home_automation:: start:: relays --> {}'.format(relays))
             for _ in relays:
-                _pin_no = _.get('pin_no', None)
+                _pin_no = _.pin_no
                 relay = relay_manager.get_relay_by_pin(_pin_no)
                 print('relay.name -->', relay.name, 'relay.pin_no -->', relay.pin_no, 'relay.pin_type-->',
                       relay.pin_type)
