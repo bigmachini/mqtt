@@ -27,20 +27,21 @@ PUB_TOPIC_UPDATE = b'home_auto/update'
 
 relay_manager = None
 update_firmware = None
+client = None
 
 
 def sub_cb(topic, msg):
-    global relay_manager, update_firmware
+    global relay_manager, update_firmware,client
     print('sub_cb:: topic -->', topic, 'msg', msg)
     if topic == SUB_TOPIC_CONFIG:
         relays = json.loads(msg.decode('utf-8'))
         if relay_manager is None:
-            relay_manager = RelayManager(relays)
+            relay_manager = RelayManager(relays,str_client_id)
         else:
             relay_manager.add_relays(relays)
     elif topic == SUB_TOPIC_RELAY:
         relay = json.loads(msg.decode('utf-8'))
-        relay_manager.update_relay(relay)
+        relay_manager.update_relay(relay,client, PUB_TOPIC_CONFIG)
     elif topic == SUB_TOPIC_UPDATE:
         update_firmware()
 
@@ -64,7 +65,7 @@ def restart_and_reconnect():
 
 
 def start(connect_to_wifi_and_update):
-    global relay_manager, update_firmware
+    global relay_manager, update_firmware,client
     update_firmware = connect_to_wifi_and_update
     try:
         client = connect_and_subscribe()
