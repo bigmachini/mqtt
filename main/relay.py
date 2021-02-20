@@ -58,5 +58,14 @@ class RelayManager:
             else:
                 raise Exception('PIN_{}_ASSIGNED_ALREADY'.format(_pin_no))
 
+    def update_relay(self, relay):
+        _pin_no = relay.get('pin_no', None)
+        _state =  relay.get('state', None)
+        if _pin_no:
+            relay = self.get_relay_by_pin(_pin_no)
+            relay.update_state(_state)
+        else:
+            raise Exception('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
+
     def get_relays(self):
         return self.relays

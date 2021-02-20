@@ -33,7 +33,8 @@ def sub_cb(topic, msg):
         else:
             relay_manager.add_relays(relays)
     elif topic == TOPIC_RELAY:
-        relay_manager.get_relay_by_pin()
+        relay = json.loads(msg.decode('utf-8'))
+        relay_manager.upadate_relay(relay)
     elif topic == TOPIC_UPDATE:
         update_firmware()
 
