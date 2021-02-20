@@ -16,7 +16,7 @@ TOPIC_CONFIG = b'home_auto/config'
 TOPIC_RELAY = b'home_auto/relay'
 TOPICS = [TOPIC_CONFIG, TOPIC_RELAY]
 
-relay_manager = []
+relay_manager = None
 
 
 def sub_cb(topic, msg):
@@ -62,22 +62,20 @@ def start():
         restart_and_reconnect()
 
     while True:
-        relays = relay_manager.get_relays()
-        print('home_automation:: start:: relays --> {}'.format(relays))
-        for _ in relays:
-            _pin_no = _.get('pin_no', None)
-            print('_pin_no', _pin_no)
-            # TODO: Add functionality to check for None
-            relay = relay_manager.get_relay_by_pin(_pin_no)
-            print(relay.name, relay.pin_no, relay.pin_type)
-            relay.update_state(0)
-            sleep(5)
+        if relay_manager is not None:
+            relays = relay_manager.get_relays()
+            print('home_automation:: start:: relays --> {}'.format(relays))
+            for _ in relays:
+                _pin_no = _.get('pin_no', None)
+                relay = relay_manager.get_relay_by_pin(_pin_no)
+                print('relay.name -->', relay.name, 'relay.pin_no -->', relay.pin_no, 'relay.pin_type-->',
+                      relay.pin_type)
+                relay.update_state(0)
+                sleep(5)
 
-        for _ in relays:
-            _pin_no = _.get('pin_no', None)
-            print('_pin_no', _pin_no)
-            # TODO: Add functionality to check for None
-            relay = relay_manager.get_relay_by_pin(_pin_no)
-            print(relay.name, relay.pin_no, relay.pin_type)
-            relay.update_state(1)
-            sleep(5)
+            for _ in relays:
+                _pin_no = _.get('pin_no', None)
+                relay = relay_manager.get_relay_by_pin(_pin_no)
+                print(relay.name, relay.pin_no, relay.pin_type)
+                relay.update_state(1)
+                sleep(5)
