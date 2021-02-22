@@ -27,7 +27,7 @@ class Relay:
             except Exception as ex:
                 return False
         else:
-            raise Exception('INVALID_STATE')
+            print('INVALID_STATE')
 
     def get_state(self):
         return self.state
@@ -79,7 +79,7 @@ class RelayManager:
                 msg = {'pin_no': _pin_no, 'client_id': self.client_id}
                 self.publish_message(msg, self.topic)
             else:
-                raise Exception('PIN_{}_ASSIGNED_ALREADY'.format(_pin_no))
+                print('PIN_{}_ASSIGNED_ALREADY'.format(_pin_no))
 
     def publish_message(self, msg, topic):
         msg = json.dumps(msg)
@@ -98,7 +98,7 @@ class RelayManager:
                     msg = {'pin_no': _pin_no, 'state': None, 'client_id': self.client_id}
                 self.publish_message(msg, topic_pub)
             else:
-                raise Exception('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
+                print('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
 
     def get_relays(self):
         return self.relays

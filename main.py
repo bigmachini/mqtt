@@ -1,3 +1,6 @@
+import _thread
+
+
 def connect_to_wifi_and_update():
     import time, machine, network, gc
     time.sleep(1)
@@ -24,13 +27,21 @@ def connect_to_wifi_and_update():
 
 
 def start_app():
+    # TODO: Add functionality to increase sleep time and sevearity of
+    # situation when exceptions occur
+    import machine
     try:
         import main.main as main
         main.start(connect_to_wifi_and_update)
     except Exception as ex:
-        import machine
+        print('ex --> ', ex)
         machine.reset()
 
 
-connect_to_wifi_and_update()
-start_app()
+try:
+    connect_to_wifi_and_update()
+    _thread.start_new_thread(start_app, ())
+except Exception as ex:
+    import machine
+    print('ex --> ', ex)
+    machine.reset()
