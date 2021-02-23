@@ -85,6 +85,6 @@ def start(connect_to_wifi_and_update):
 
     while True:
         client.check_msg()
-        get_configuration()
+        # get_configuration()
         if relay_manager is not None:
             pass
