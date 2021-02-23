@@ -23,6 +23,7 @@ TOPICS = [SUB_TOPIC_CONFIG, SUB_TOPIC_RELAY, SUB_TOPIC_UPDATE]
 PUB_TOPIC_CONFIG = b'home_auto/config'
 PUB_TOPIC_RELAY = b'home_auto/relay'
 PUB_TOPIC_UPDATE = b'home_auto/update'
+PUB_TOPIC_STATUS = b'home_auto/status'
 
 relay_manager = None
 update_firmware = None

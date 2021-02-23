@@ -7,11 +7,11 @@ PIN_TYPE = {'in': Pin.IN,
 
 
 class Relay:
-    def __init__(self, pin_no, pin_type, name, client_id):
-        self.name = name + "_" + str(pin_no)
+    def __init__(self, pin_no, pin_type, state, client_id):
+        self.name = "pin_" + str(pin_no)
         self.pin_no = pin_no
         self.pin_type = PIN_TYPE[pin_type]
-        self.state = False
+        self.state = state
         self.relay = Pin(pin_no, self.pin_type)
         self.client_id = client_id
         print('relay -->', self.relay, 'pin no -->', self.pin_no, 'pin_type -->', self.pin_type)
@@ -20,7 +20,7 @@ class Relay:
         if isinstance(state, int):
             try:
                 self.relay.value(state)
-                self.state = bool(state)
+                self.state = state
                 print('Relay:: update_state:: relay.name -->', self.name, 'relay.pin_no -->', self.pin_no,
                       'relay.pin_type-->', self.pin_type, 'state', state)
                 return True
@@ -31,6 +31,9 @@ class Relay:
 
     def get_state(self):
         return self.state
+
+    def get_status(self):
+        return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type}
 
     def __str__(self):
         return self.name
@@ -99,6 +102,13 @@ class RelayManager:
                 self.publish_message(msg, topic_pub)
             else:
                 print('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
+
+    def update_state(self, topic):
+        res = []
+        for _ in self.relays:
+            res.append(_.get_state())
+        if res:
+            self.publish_message(res, topic)
 
     def get_relays(self):
         return self.relays
