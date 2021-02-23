@@ -29,14 +29,11 @@ class Relay:
         else:
             print('INVALID_STATE')
 
-    def get_state(self):
-        return self.state
-
     def get_status(self):
         return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type, "client_id": self.client_id}
 
-    def __str__(self):
-        return self.name
+    def __repr__(self):
+        return 'Relay({},{},{},{})'.format(self.pin_no, self.pin_type, self.state, self.client_id)
 
 
 class RelayManager:
