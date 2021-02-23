@@ -86,21 +86,17 @@ class RelayManager:
         msg = msg.encode('utf-8')
         self.client.publish(topic, msg)
 
-    def update_relay(self, relays, topic_pub):
+    def update_relay(self, relays):
         for _ in relays:
             _pin_no = _.get('pin_no', None)
             _state = _.get('state', None)
             if _pin_no:
                 relay = self.get_relay_by_pin(_pin_no)
-                if relay and relay.update_state(_state):
-                    msg = {'pin_no': _pin_no, 'state': _state, 'client_id': self.client_id}
-                else:
-                    msg = {'pin_no': _pin_no, 'state': None, 'client_id': self.client_id}
-                self.publish_message(msg, topic_pub)
+                relay.update_state(_state)
             else:
                 print('PIN_{}_NOT_ASSIGNED'.format(_pin_no))
 
-    def update_state(self, topic):
+    def update_status(self, topic):
         res = []
         for _ in self.relays:
             res.append(_.get_status())
