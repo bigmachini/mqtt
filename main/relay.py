@@ -12,7 +12,7 @@ class Relay:
         self.pin_no = pin_no
         self.pin_type = pin_type
         self.state = state
-        self.relay = Pin(pin_no, self.pin_type)
+        self.relay = Pin(pin_no, PIN_TYPE[pin_type])
         self.client_id = client_id
         print(self)
 
