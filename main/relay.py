@@ -69,9 +69,9 @@ class RelayManager:
         for _ in relays:
             _pin_no = _.get('pin_no', None)
             _pin_type = _.get('pin_type', None)
-            _name = _.get('name', None)
+            _state = _.get('state', None)
             if _pin_no not in _pin_list:
-                _relay = Relay(_pin_no, _pin_type, _name, self.client_id)
+                _relay = Relay(_pin_no, _pin_type, _state, self.client_id)
                 self.relays.append(_relay)
                 _pin_list.append(_pin_no)
                 self.pin_set = set(_pin_list)

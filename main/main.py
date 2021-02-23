@@ -42,7 +42,7 @@ def sub_cb(topic, msg):
     elif topic == SUB_TOPIC_RELAY:
         relay = json.loads(msg.decode('utf-8'))
         if relay_manager:
-            relay_manager.update_relay(relay, PUB_TOPIC_STATUS)
+            relay_manager.update_relay(relay)
     elif topic == SUB_TOPIC_UPDATE:
         update_firmware()
     relay_manager.update_status(PUB_TOPIC_STATUS)
