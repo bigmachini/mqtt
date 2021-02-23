@@ -33,7 +33,7 @@ class Relay:
         return self.state
 
     def get_status(self):
-        return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type}
+        return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type, "client_id": self.client_id}
 
     def __str__(self):
         return self.name
