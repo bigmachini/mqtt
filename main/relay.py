@@ -14,15 +14,14 @@ class Relay:
         self.state = state
         self.relay = Pin(pin_no, self.pin_type)
         self.client_id = client_id
-        print('relay -->', self.relay, 'pin no -->', self.pin_no, 'pin_type -->', self.pin_type)
+        print(self)
 
     def update_state(self, state=0):
         if isinstance(state, int):
             try:
                 self.relay.value(state)
                 self.state = state
-                print('Relay:: update_state:: relay.name -->', self.name, 'relay.pin_no -->', self.pin_no,
-                      'relay.pin_type-->', self.pin_type, 'state', state)
+                print(self)
                 return True
             except Exception as ex:
                 return False
@@ -33,7 +32,8 @@ class Relay:
         return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type, "client_id": self.client_id}
 
     def __repr__(self):
-        return 'Relay({},{},{},{})'.format(self.pin_no, self.pin_type, self.state, self.client_id)
+        return 'Relay(pin_no={},pin_type={},state={},client_id={})'.format(self.pin_no, self.pin_type, self.state,
+                                                                           self.client_id)
 
 
 class RelayManager:
@@ -103,7 +103,8 @@ class RelayManager:
     def update_state(self, topic):
         res = []
         for _ in self.relays:
-            res.append(_.get_state())
+            res.append(_.get_status())
+
         if res:
             self.publish_message(res, topic)
 
