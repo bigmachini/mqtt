@@ -1,6 +1,6 @@
 import json
 
-from machine import Pin
+from machine import Pin,RTC
 
 PIN_TYPE = {'in': Pin.IN,
             'out': Pin.OUT}
@@ -21,7 +21,6 @@ class Relay:
             try:
                 self.relay.value(state)
                 self.state = state
-                print(self)
                 return True
             except Exception as ex:
                 return False
@@ -29,6 +28,9 @@ class Relay:
             print('INVALID_STATE')
 
     def get_status(self):
+        rtc = RTC()
+        if rtc:
+
         return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type, "client_id": self.client_id}
 
     def __repr__(self):

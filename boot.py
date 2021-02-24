@@ -1,10 +1,11 @@
 import esp
 import network
-
+from machine import RTC
 import main.secrets as secret
 
 esp.osdebug(None)
 import gc
+
 gc.collect()
 
 ssid = secret.WIFI_SSID
@@ -14,8 +15,10 @@ station = network.WLAN(network.STA_IF)
 station.active(True)
 station.connect(ssid, password)
 
-while station.isconnected() == False:
-  pass
+if station.isconnected():
+    import ntptime
 
-print('Connection successful')
+    ntptime.settime()
+
+print('Connection successful at {}'.format(RTC().datetime()))
 print(station.ifconfig())

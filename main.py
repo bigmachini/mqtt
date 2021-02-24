@@ -11,11 +11,22 @@ def connect_to_wifi_and_update():
 
     sta_if = network.WLAN(network.STA_IF)
     if not sta_if.isconnected():
+        count = 0
         print('connecting to network...')
         sta_if.active(True)
         sta_if.connect(secret.WIFI_SSID, secret.WIFI_PASSWORD)
         while not sta_if.isconnected():
-            pass
+            print(".", end="")
+            time.sleep(1)
+            count = count+1
+            if count >= 120:
+                machine.reset()
+                return 0
+
+    else:
+        import ntptime
+        ntptime.settime()
+
     print('network config:', sta_if.ifconfig())
     otaUpdater = OTAUpdater(secret.GITHUB_URL, main_dir='main', secrets_file="secrets.py")
     hasUpdated = otaUpdater.install_update_if_available()
@@ -43,5 +54,6 @@ try:
     _thread.start_new_thread(start_app, ())
 except Exception as ex:
     import machine
+
     print('ex --> ', ex)
     machine.reset()
