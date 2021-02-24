@@ -44,7 +44,7 @@ def start_app():
         import main.main as main
         main.start(connect_to_wifi_and_update)
     except Exception as ex:
-        print('ex --> ', ex)
+        print('start_app:: ex --> ', ex)
         machine.reset()
 
 
@@ -54,5 +54,5 @@ try:
 except Exception as ex:
     import machine
 
-    print('ex --> ', ex)
+    print('main:: ex --> ', ex)
     machine.reset()

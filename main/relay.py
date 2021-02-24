@@ -23,6 +23,7 @@ class Relay:
                 self.state = state
                 return True
             except Exception as ex:
+                print('Relay::update_state:: ex --> ', ex)
                 return False
         else:
             print('INVALID_STATE')
