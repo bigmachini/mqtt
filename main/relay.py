@@ -1,6 +1,6 @@
 import json
 
-from machine import Pin,RTC
+from machine import Pin, RTC
 
 PIN_TYPE = {'in': Pin.IN,
             'out': Pin.OUT}
@@ -27,11 +27,15 @@ class Relay:
         else:
             print('INVALID_STATE')
 
-    def get_status(self):
+    def _get_datetime(self):
         rtc = RTC()
-        if rtc:
+        _datetime = rtc.datetime()
+        return "{}/{}/{} {}:{}:{}".format(_datetime[2], _datetime[1], _datetime[0], _datetime[3], _datetime[4],
+                                          _datetime[5])
 
-        return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type, "client_id": self.client_id}
+    def get_status(self):
+        return {"state": self.state, "pin": self.pin_no, "pin_type": self.pin_type, "client_id": self.client_id,
+                'time': self._get_datetime()}
 
     def __repr__(self):
         return 'Relay(pin_no={},pin_type={},state={},client_id={})'.format(self.pin_no, self.pin_type, self.state,

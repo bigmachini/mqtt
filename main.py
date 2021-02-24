@@ -18,11 +18,10 @@ def connect_to_wifi_and_update():
         while not sta_if.isconnected():
             print(".", end="")
             time.sleep(1)
-            count = count+1
+            count = count + 1
+            #TODO make this a configuration
             if count >= 120:
                 machine.reset()
-                return 0
-
     else:
         import ntptime
         ntptime.settime()
