@@ -28,7 +28,7 @@ def connect_to_wifi_and_update():
         import ntptime
         ntptime.settime()
 
-    print('network config:', sta_if.ifconfig())
+    print('\nnetwork config:', sta_if.ifconfig())
     otaUpdater = OTAUpdater(secret.GITHUB_URL, main_dir='main', secrets_file="secrets.py")
     hasUpdated = otaUpdater.install_update_if_available()
     if hasUpdated:
@@ -38,20 +38,11 @@ def connect_to_wifi_and_update():
         gc.collect()
 
 
-def start_app():
-    # TODO: Add functionality to increase sleep time and sevearity of
-    # situation when exceptions occur
-    try:
-        import main.main as main
-        main.start(connect_to_wifi_and_update)
-    except Exception as ex:
-        print('start_app:: ex --> ', ex)
-        reset()
-
-
 try:
+    import main.main as main
+
     connect_to_wifi_and_update()
-    _thread.start_new_thread(start_app, ())
+    _thread.start_new_thread(main.start, (connect_to_wifi_and_update,))
 except Exception as ex:
     print('main:: ex --> ', ex)
     reset()
